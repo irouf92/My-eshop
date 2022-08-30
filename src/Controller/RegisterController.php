@@ -20,6 +20,14 @@ class RegisterController extends AbstractController
     EntityManagerInterface $entityManager,
     UserPasswordHasherInterface $passwordHasher
   ): Response {
+
+    # Cette condition permet de détecter si un utilisateur est connecté.
+        # Si oui, alors l'utilisateur est redirigé.
+        # Cela interdit l'inscription à un user connecté.
+
+   if ($this->getUser()) {
+      return $this->redirectToRoute('default_home');
+  }
     #instanciation
     $user = new User();
 
