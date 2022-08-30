@@ -14,49 +14,54 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegisterController extends AbstractController
 {
-    #[Route('/inscription', name: 'user_register', methods: ['GET', 'POST'])]
-    public function register(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher
-    ): Response
-    {
-        #instanciation
-      $user = new User();
+  #[Route('/inscription', name: 'user_register', methods: ['GET', 'POST'])]
+  public function register(
+    Request $request,
+    EntityManagerInterface $entityManager,
+    UserPasswordHasherInterface $passwordHasher
+  ): Response {
+    #instanciation
+    $user = new User();
 
-# 2 - Création du formulaire + mécanisme d'auto-hydratation
+    # 2 - Création du formulaire + mécanisme d'auto-hydratation
 
-      $form = $this->createForm(RegisterFormType::class, $user)->handleRequest($request);
+    $form = $this->createForm(RegisterFormType::class, $user)->handleRequest($request);
 
-      #Au clic du boutton "validé"
-      if($form->isSubmitted() && $form->isValid()) {
-      
-        #Set des proprietes qui ne sont pas dans le formulaire
-        $user->setCreatedAt(new DateTime());
-        $user->setUpdatedAt(new DateTime());
-        #La propriete "role" est un array [tablaeu]
-        $user->setRoles(['ROLE_USER']);
+    #Au clic du boutton "validé"
+    if ($form->isSubmitted() && $form->isValid()) {
 
-        #Nous devons resetter manuellement le password car par defaut il n est pas haché
-        #Pour cela nous devons utiliser une methode de hachage, appellée hashPassword() :
-            # => cette méthode prend 2 arguments : $user, $plainPassword
+      #Set des proprietes qui ne sont pas dans le formulaire
+      $user->setCreatedAt(new DateTime());
+      $user->setUpdatedAt(new DateTime());
+      #La propriete "role" est un array [tablaeu]
+      $user->setRoles(['ROLE_USER']);
 
-        
-        $user->setPassword(
-            $passwordHasher->hashPassword(
-                $user, $form->get('password')->getData())
-        );
+      #Nous devons resetter manuellement le password car par defaut il n est pas haché
+      #Pour cela nous devons utiliser une methode de hachage, appellée hashPassword() :
+      # => cette méthode prend 2 arguments : $user, $plainPassword
 
-        $entityManager->persist($user);
-        $entityManager->flush();
 
-        return $this->redirectToRoute('default_home');
-      }//end if
+      $user->setPassword(
+        $passwordHasher->hashPassword(
+          $user,
+          $form->get('password')->getData()
+        )
+      );
 
-     # 3 - Rendu de la vue Twig, avec le formulaire
+      $entityManager->persist($user);
+      $entityManager->flush();
 
-      return $this ->render('register/form.html.twig',[
-        'form' => $form->createView()# createView() permet de générer le HTML pour l'affichage
+      # La méthode addFlash() nous permet d'ajouter des messages destinés à l'utilisateur.
+      # On pourra tous les afficher en front (avec Twig)
+      $this->addFlash('success', 'Votre inscription a été effectué avec succés !');
+      return $this->redirectToRoute('default_home');
+    } //end if
 
-      ]);
-      
-      }
-    }
+    # 3 - Rendu de la vue Twig, avec le formulaire
 
+    return $this->render('register/form.html.twig', [
+      'form' => $form->createView() # createView() permet de générer le HTML pour l'affichage
+
+    ]);
+  }
+}
