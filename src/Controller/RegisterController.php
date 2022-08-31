@@ -22,12 +22,12 @@ class RegisterController extends AbstractController
   ): Response {
 
     # Cette condition permet de détecter si un utilisateur est connecté.
-        # Si oui, alors l'utilisateur est redirigé.
-        # Cela interdit l'inscription à un user connecté.
+    # Si oui, alors l'utilisateur est redirigé.
+    # Cela interdit l'inscription à un user connecté.
 
-   if ($this->getUser()) {
+    if ($this->getUser()) {
       return $this->redirectToRoute('default_home');
-  }
+    }
     #instanciation
     $user = new User();
 
