@@ -4,7 +4,7 @@
     Voir les archives
 {% endblock %}
 
-{% endblock %}
+{% block body %}
 
 <h1 class='text-center my-3'>Produits archivés</h1>
 
@@ -69,8 +69,10 @@
 						<tr>
 							<td colspan="11" class="bg-warning text-center">Aucun produit en ligne</td>
 						</tr>
-					{% endfor %}
+					{# {% endfor %} #}
+				
 				</tbody>
 			</table>
 		</div>
 	</div>
+		{% endblock %}

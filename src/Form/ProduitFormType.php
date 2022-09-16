@@ -18,11 +18,11 @@ class ProduitFormType extends AbstractType
     {
         $builder
             ->add('title', TextType::class,[
-                'label'=> 'Titre produit',
+                'label'=> 'Titre du produit',
             ])
             ->add( 'description')
             ->add('color', TextType::class,[
-                'label'=> 'Couleur',
+                'label'=> 'Couleur du produi',
             ])
             ->add('size', ChoiceType::class,[
                 'label'=> 'Taille',

@@ -32,7 +32,7 @@ class ProduitController extends AbstractController
 #[Route('/voir-les-archives', name: 'show_trash', methods: ['GET'])]
     public function showTrash(EntityManagerInterface $entityManager): Response
 {
-return $this->render('admin/produit/show_trash.html.twig');
+return $this->render('admin/show_trash.html.twig');
 }
 
     #[Route('/ajouter-un-produit', name: "create_produit", methods: ['GET', 'POST'])]
