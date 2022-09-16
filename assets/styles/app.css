@@ -1,0 +1,14 @@
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: 0;
+}                                                                                                                                                 body {
+    background-color: #c621d594 !important;
+}
+
+.img-custom {
+    object-fit: contain;
+}
+
+
+
